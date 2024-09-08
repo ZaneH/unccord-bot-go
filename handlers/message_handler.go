@@ -15,7 +15,7 @@ type PlayerInfo struct {
 	IsPlaying bool
 }
 
-func (h *Handler) OnMessageCreate(event *events.MessageCreate) {
+func OnMessageCreate(event *events.MessageCreate) {
 	if event.Message.Author.Bot {
 		return
 	}

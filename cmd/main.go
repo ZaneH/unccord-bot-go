@@ -44,7 +44,7 @@ func main() {
 		),
 		bot.WithCacheConfigOpts(
 			cache.WithCaches(
-				cache.CacheGuildVoiceStates,
+				cache.FlagVoiceStates,
 			),
 		),
 		bot.WithEventListenerFunc(handlers.OnReactionAdd),
@@ -73,13 +73,14 @@ func main() {
 		return
 	}
 
-	// b.RegisterGuildCommands(client, snowflake.ID(1112943203755233350))
+	// Register guild commands after connecting to the gateway (useful for testing in a specific guild without re-registering)
+	// b.RegisterGuildCommands(client, snowflake.ID(YOUR_GUILD_ID))
 
 	node, err := b.Lavalink.AddNode(ctx, disgolink.NodeConfig{
-		Name:     "local",
-		Address:  "localhost:2333",
-		Password: "youshallnotpass",
-		Secure:   false,
+		Name:     "default",
+		Address:  lavalinkHost + ":" + lavalinkPort,
+		Password: lavalinkPassword,
+		Secure:   lavalinkSecure,
 	})
 	if err != nil {
 		slog.Error("Failed to add node", slog.Any("err", err))
