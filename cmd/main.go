@@ -12,17 +12,13 @@ import (
 
 	"uncord-bot-go/config"
 	"uncord-bot-go/handlers"
-<<<<<<< HEAD:cmd/main.go
-
-	"uncord-bot-go/lavalink"
-=======
->>>>>>> aa3842a (fix: music is playing):uncord-bot-go/cmd/main.go
 
 	"github.com/disgoorg/disgo"
 	"github.com/disgoorg/disgo/bot"
 	"github.com/disgoorg/disgo/cache"
 	"github.com/disgoorg/disgo/gateway"
 	"github.com/disgoorg/disgolink/v3/disgolink"
+	"github.com/disgoorg/snowflake/v2"
 )
 
 func main() {
@@ -34,7 +30,6 @@ func main() {
 		slog.Error("Error loading .env file", "err", err)
 	}
 
-<<<<<<< HEAD:cmd/main.go
 	config.LoadConfig() // load configuration
 	config.ConnectDB()  // connect to database
 
@@ -48,21 +43,14 @@ func main() {
 				gateway.IntentGuildVoiceStates,      // Listen for voice state updates
 			),
 		),
+		bot.WithCacheConfigOpts(
+			cache.WithCaches(
+				cache.CacheGuildVoiceStates,
+			),
+		),
 		bot.WithEventListenerFunc(handlers.OnReactionAdd),
 		bot.WithEventListenerFunc(handlers.OnMessageCreate),
 		bot.WithEventListenerFunc(handlers.OnReactionRemove),
-=======
-	b := handlers.NewHandler()
-
-	client, err := disgo.New(token,
-		bot.WithGatewayConfigOpts(
-			gateway.WithIntents(gateway.IntentGuilds, gateway.IntentGuildVoiceStates, gateway.IntentGuildMessages, gateway.IntentMessageContent),
-		),
-		bot.WithCacheConfigOpts(
-			cache.WithCaches(cache.FlagVoiceStates),
-		),
-		bot.WithEventListeners(b),
->>>>>>> aa3842a (fix: music is playing):uncord-bot-go/cmd/main.go
 	)
 	if err != nil {
 		slog.Error("Error while building client", slog.Any("err", err))
@@ -79,6 +67,14 @@ func main() {
 		return
 	}
 	defer client.Close(context.TODO())
+
+	// Register commands after connecting to the gateway
+	if err = b.RegisterCommands(client); err != nil {
+		slog.Error("Failed to register commands", slog.Any("err", err))
+		return
+	}
+
+	b.RegisterGuildCommands(client, snowflake.ID(1112943203755233350))
 
 	node, err := b.Lavalink.AddNode(ctx, disgolink.NodeConfig{
 		Name:     "local",
