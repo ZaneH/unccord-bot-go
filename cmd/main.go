@@ -18,7 +18,6 @@ import (
 	"github.com/disgoorg/disgo/cache"
 	"github.com/disgoorg/disgo/gateway"
 	"github.com/disgoorg/disgolink/v3/disgolink"
-	"github.com/disgoorg/snowflake/v2"
 )
 
 func main() {
@@ -74,7 +73,7 @@ func main() {
 		return
 	}
 
-	b.RegisterGuildCommands(client, snowflake.ID(1112943203755233350))
+	// b.RegisterGuildCommands(client, snowflake.ID(1112943203755233350))
 
 	node, err := b.Lavalink.AddNode(ctx, disgolink.NodeConfig{
 		Name:     "local",
