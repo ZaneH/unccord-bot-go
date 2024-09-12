@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"sync"
-	"uncord-bot-go/queue"
+	queue "uncord-bot-go/internal"
 
 	"github.com/disgoorg/disgo/bot"
 	"github.com/disgoorg/disgo/events"

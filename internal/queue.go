@@ -1,4 +1,4 @@
-package queue
+package internal
 
 import (
 	"math/rand"

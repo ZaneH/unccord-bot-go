@@ -27,7 +27,7 @@ func OnMessageCreate(event *events.MessageCreate) {
 			return
 		}
 
-		voiceState, exists := h.Client.Caches().VoiceState(*guildID, event.Message.Author.ID)
+		voiceState, exists := event.Client.Caches().VoiceState(*guildID, event.Message.Author.ID)
 		if !exists || voiceState.ChannelID == nil {
 			return
 		}

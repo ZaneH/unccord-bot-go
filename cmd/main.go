@@ -55,7 +55,6 @@ func main() {
 		slog.Error("Error while building client", slog.Any("err", err))
 		return
 	}
-	b.Client = client
 
 	b.Lavalink = disgolink.New(client.ApplicationID())
 
@@ -78,9 +77,9 @@ func main() {
 
 	node, err := b.Lavalink.AddNode(ctx, disgolink.NodeConfig{
 		Name:     "default",
-		Address:  lavalinkHost + ":" + lavalinkPort,
-		Password: lavalinkPassword,
-		Secure:   lavalinkSecure,
+		Address:  config.AppConfig.LavaLinkHost + ":" + config.AppConfig.LavaLinkPort,
+		Password: config.AppConfig.LavaLinkPassword,
+		Secure:   config.AppConfig.LavaLinkSecure,
 	})
 	if err != nil {
 		slog.Error("Failed to add node", slog.Any("err", err))
